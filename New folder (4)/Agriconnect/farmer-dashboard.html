@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - AgriConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: var(--primary-color);
+        }
+        
+        .sidebar-header h3 {
+            margin-bottom: 0;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .dashboard-header {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stats-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .stats-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .crop-card {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .crop-card:last-child {
+            border-bottom: none;
+        }
+        
+        .crop-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            background-color: #f1f1f1;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .crop-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .crop-details {
+            flex: 1;
+        }
+        
+        .crop-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .request-card {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .request-card:last-child {
+            border-bottom: none;
+        }
+        
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .buyer-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .buyer-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #6c757d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .request-actions {
+            margin-top: 10px;
+        }
+        
+        .contract-card {
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .contract-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .contract-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-completed {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+            
+            .sidebar.active {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .main-content.active {
+                margin-left: 250px;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+        }
+        
+        /* Add Crop Modal */
+        .crop-form-group {
+            margin-bottom: 20px;
+        }
+        
+        /* Chart Styles */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Weather Widget Styles */
+        .weather-widget {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .weather-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .weather-temp {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .weather-forecast {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .forecast-day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .forecast-day i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        /* Calendar Styles */
+        .calendar-container {
+            padding: 10px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .calendar-day:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        
+        .calendar-day.today {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .calendar-day.other-month {
+            color: #ccc;
+        }
+        
+        /* Market Insights Styles */
+        .price-trend {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .price-trend-crop {
+            flex: 1;
+        }
+        
+        .price-trend-value {
+            font-weight: bold;
+        }
+        
+        .price-trend-change {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        .price-up {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .price-down {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Equipment Management Styles */
+        .equipment-card {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .equipment-card:last-child {
+            border-bottom: none;
+        }
+        
+        .equipment-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #f1f1f1;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .equipment-icon i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .equipment-details {
+            flex: 1;
+        }
+        
+        .equipment-status {
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-in-use {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-maintenance {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>AgriConnect</h3>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-seedling"></i> My Crops
+                </a>
+                <a href="contracts.html" class="menu-item">
+                    <i class="fas fa-file-contract"></i> Contracts
+                </a>
+                <a href="chat.html" class="menu-item">
+                    <i class="fas fa-comments"></i> Messages
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="profile.html" class="menu-item">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h2>Farmer Dashboard</h2>
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div>
+                        <h6 class="mb-0">John Doe</h6>
+                        <small class="text-muted">Organic Farmer</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="dashboard-card stats-card">
+                        <i class="fas fa-seedling"></i>
+                        <h3>12</h3>
+                        <p class="text-muted mb-0">Active Crops</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card stats-card">
+                        <i class="fas fa-file-contract"></i>
+                        <h3>5</h3>
+                        <p class="text-muted mb-0">Active Contracts</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card stats-card">
+                        <i class="fas fa-comment-dots"></i>
+                        <h3>8</h3>
+                        <p class="text-muted mb-0">New Messages</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card stats-card">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>$3,240</h3>
+                        <p class="text-muted mb-0">Monthly Revenue</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- My Crops Section -->
+                <div class="col-lg-8">
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4>My Crops</h4>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCropModal">
+                                <i class="fas fa-plus"></i> Add Crop
+                            </button>
+                        </div>
+
+                        <!-- Crop Listings -->
+                        <div class="crop-card">
+                            <div class="crop-image">
+                                <img src="https://via.placeholder.com/80x80?text=Wheat" alt="Wheat">
+                            </div>
+                            <div class="crop-details">
+                                <h5>Organic Wheat</h5>
+                                <div class="d-flex">
+                                    <span class="me-3"><i class="fas fa-weight me-1"></i> 2,500 kg</span>
+                                    <span class="me-3"><i class="fas fa-dollar-sign me-1"></i> $0.80/kg</span>
+                                    <span><i class="fas fa-calendar me-1"></i> Harvest: June 2025</span>
+                                </div>
+                            </div>
+                            <div class="crop-actions">
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="crop-card">
+                            <div class="crop-image">
+                                <img src="https://via.placeholder.com/80x80?text=Rice" alt="Rice">
+                            </div>
+                            <div class="crop-details">
+                                <h5>Basmati Rice</h5>
+                                <div class="d-flex">
+                                    <span class="me-3"><i class="fas fa-weight me-1"></i> 1,800 kg</span>
+                                    <span class="me-3"><i class="fas fa-dollar-sign me-1"></i> $1.20/kg</span>
+                                    <span><i class="fas fa-calendar me-1"></i> Harvest: July 2025</span>
+                                </div>
+                            </div>
+                            <div class="crop-actions">
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="crop-card">
+                            <div class="crop-image">
+                                <img src="https://via.placeholder.com/80x80?text=Corn" alt="Corn">
+                            </div>
+                            <div class="crop-details">
+                                <h5>Sweet Corn</h5>
+                                <div class="d-flex">
+                                    <span class="me-3"><i class="fas fa-weight me-1"></i> 3,200 kg</span>
+                                    <span class="me-3"><i class="fas fa-dollar-sign me-1"></i> $0.65/kg</span>
+                                    <span><i class="fas fa-calendar me-1"></i> Harvest: August 2025</span>
+                                </div>
+                            </div>
+                            <div class="crop-actions">
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-outline-primary">View All Crops</a>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Chart -->
+                    <div class="dashboard-card">
+                        <h4 class="mb-4">Revenue Overview</h4>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Forecast -->
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4>Weather Forecast</h4>
+                            <select class="form-select form-select-sm" style="width: auto;">
+                                <option selected>Farm Location</option>
+                                <option>Field 1 - North</option>
+                                <option>Field 2 - South</option>
+                            </select>
+                        </div>
+                        <div class="weather-widget">
+                            <i class="fas fa-sun weather-icon"></i>
+                            <div class="weather-temp">28°C</div>
+                            <div>Sunny, Wind: 12 km/h</div>
+                            <div class="text-muted">Last updated: Today, 10:30 AM</div>
+                            
+                            <div class="weather-forecast">
+                                <div class="forecast-day">
+                                    <div>Sat</div>
+                                    <i class="fas fa-cloud-sun"></i>
+                                    <div>26°C</div>
+                                </div>
+                                <div class="forecast-day">
+                                    <div>Sun</div>
+                                    <i class="fas fa-cloud"></i>
+                                    <div>24°C</div>
+                                </div>
+                                <div class="forecast-day">
+                                    <div>Mon</div>
+                                    <i class="fas fa-cloud-showers-heavy"></i>
+                                    <div>22°C</div>
+                                </div>
+                                <div class="forecast-day">
+                                    <div>Tue</div>
+                                    <i class="fas fa-cloud-rain"></i>
+                                    <div>21°C</div>
+                                </div>
+                                <div class="forecast-day">
+                                    <div>Wed</div>
+                                    <i class="fas fa-sun"></i>
+                                    <div>25°C</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-sm btn-outline-primary">View Detailed Forecast</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Crop Calendar -->
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4>Crop Calendar</h4>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-2">
+                                    <i class="fas fa-plus"></i> Add Event
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h5 class="mb-0">March 2025</h5>
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="calendar-grid">
+                                <div class="calendar-day">Su</div>
+                                <div class="calendar-day">Mo</div>
+                                <div class="calendar-day">Tu</div>
+                                <div class="calendar-day">We</div>
+                                <div class="calendar-day">Th</div>
+                                <div class="calendar-day">Fr</div>
+                                <div class="calendar-day">Sa</div>
+                                
+                                <div class="calendar-day other-month">23</div>
+                                <div class="calendar-day other-month">24</div>
+                                <div class="calendar-day other-month">25</div>
+                                <div class="calendar-day other-month">26</div>
+                                <div class="calendar-day other-month">27</div>
+                                <div class="calendar-day other-month">28</div>
+                                <div class="calendar-day">1</div>
+                                
+                                <div class="calendar-day">2</div>
+                                <div class="calendar-day">3</div>
+                                <div class="calendar-day">4</div>
+                                <div class="calendar-day">5</div>
+                                <div class="calendar-day">6</div>
+                                <div class="calendar-day">7</div>
+                                <div class="calendar-day">8</div>
+                                
+                                <div class="calendar-day">9</div>
+                                <div class="calendar-day">10</div>
+                                <div class="calendar-day has-event">11</div>
+                                <div class="calendar-day">12</div>
+                                <div class="calendar-day">13</div>
+                                <div class="calendar-day has-event">14</div>
+                                <div class="calendar-day">15</div>
+                                
+                                <div class="calendar-day">16</div>
+                                <div class="calendar-day">17</div>
+                                <div class="calendar-day">18</div>
+                                <div class="calendar-day">19</div>
+                                <div class="calendar-day has-event">20</div>
+                                <div class="calendar-day">21</div>
+                                <div class="calendar-day">22</div>
+                                
+                                <div class="calendar-day">23</div>
+                                <div class="calendar-day">24</div>
+                                <div class="calendar-day">25</div>
+                                <div class="calendar-day">26</div>
+                                <div class="calendar-day">27</div>
+                                <div class="calendar-day today">28</div>
+                                <div class="calendar-day">29</div>
+                                
+                                <div class="calendar-day">30</div>
+                                <div class="calendar-day">31</div>
+                                <div class="calendar-day other-month">1</div>
+                                <div class="calendar-day other-month">2</div>
+                                <div class="calendar-day other-month">3</div>
+                                <div class="calendar-day other-month">4</div>
+                                <div class="calendar-day other-month">5</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <h6>Upcoming Events</h6>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Wheat Fertilization</strong>
+                                            <div class="text-muted">March 11, 2025</div>
+                                        </div>
+                                        <span class="badge bg-primary">Scheduled</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Rice Irrigation</strong>
+                                            <div class="text-muted">March 14, 2025</div>
+                                        </div>
+                                        <span class="badge bg-primary">Scheduled</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Corn Pest Control</strong>
+                                            <div class="text-muted">March 20, 2025</div>
+                                        </div>
+                                        <span class="badge bg-primary">Scheduled</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Buyer Requests -->
+                    <div class="dashboard-card">
+                        <h4 class="mb-3">Buyer Requests</h4>
+                        
+                        <div class="request-card">
+                            <div class="request-header">
+                                <div class="buyer-info">
+                                    <div class="buyer-avatar">AB</div>
+                                    <span>Acme Buyers Ltd.</span>
+                                </div>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                            <p>Interested in purchasing 500kg of Organic Wheat at $0.85/kg for delivery in July.</p>
+                            <div class="request-actions">
+                                <button class="btn btn-sm btn-success">Accept</button>
+                                <button class="btn btn-sm btn-outline-danger">Decline</button>
+                                <button class="btn btn-sm btn-outline-primary">Message</button>
+                            </div>
+                        </div>
+                        
+                        <div class="request-card">
+                            <div class="request-header">
+                                <div class="buyer-info">
+                                    <div class="buyer-avatar">GF</div>
+                                    <span>Green Foods Co.</span>
+                                </div>
+                                <small class="text-muted">1 day ago</small>
+                            </div>
+                            <p>Looking to purchase 1000kg of Basmati Rice at $1.15/kg with delivery in August.</p>
+                            <div class="request-actions">
+                                <button class="btn btn-sm btn-success">Accept</button>
+                                <button class="btn btn-sm btn-outline-danger">Decline</button>
+                                <button class="btn btn-sm btn-outline-primary">Message</button>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-outline-primary">View All Requests</a>
+                        </div>
+                    </div>
+
+                    <!-- Active Contracts -->
+                    <div class="dashboard-card">
+                        <h4 class="mb-3">Active Contracts</h4>
+                        
+                        <div class="contract-card">
+                            <div class="contract-header">
+                                <h6 class="mb-0">Contract #1234</h6>
+                                <span class="contract-status status-active">Active</span>
+                            </div>
+                            <p class="mb-1">Organic Wheat - 1,000 kg</p>
+                            <p class="mb-1">Buyer: Whole Foods Market</p>
+                            <p class="mb-1">Delivery: May 30, 2025</p>
+                            <div class="progress mt-2" style="height: 5px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">65% completed</small>
+                        </div>
+                        
+                        <div class="contract-card">
+                            <div class="contract-header">
+                                <h6 class="mb-0">Contract #1235</h6>
+                                <span class="contract-status status-pending">Pending</span>
+                            </div>
+                            <p class="mb-1">Sweet Corn - 800 kg</p>
+                            <p class="mb-1">Buyer: Local Grocery Inc.</p>
+                            <p class="mb-1">Delivery: June 15, 2025</p>
+                            <div class="progress mt-2" style="height: 5px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">25% completed</small>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="contracts.html" class="btn btn-outline-primary">View All Contracts</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Insights -->
+                    <div class="dashboard-card">
+                        <h4 class="mb-3">Market Insights</h4>
+                        
+                        <div class="price-trend">
+                            <div class="price-trend-crop">Wheat (per kg)</div>
+                            <div class="price-trend-value">$0.82</div>
+                            <span class="price-trend-change price-up">+2.5%</span>
+                        </div>
+                        
+                        <div class="price-trend">
+                            <div class="price-trend-crop">Rice (per kg)</div>
+                            <div class="price-trend-value">$1.15</div>
+                            <span class="price-trend-change price-down">-1.3%</span>
+                        </div>
+                        
+                        <div class="price-trend">
+                            <div class="price-trend-crop">Corn (per kg)</div>
+                            <div class="price-trend-value">$0.68</div>
+                            <span class="price-trend-change price-up">+4.6%</span>
+                        </div>
+                        
+                        <div class="price-trend">
+                            <div class="price-trend-crop">Soybeans (per kg)</div>
+                            <div class="price-trend-value">$0.95</div>
+                            <span class="price-trend-change price-up">+0.8%</span>
+                        </div>
+                        
+                        <div class="chart-container mt-3">
+                            <canvas id="marketTrendsChart"></canvas>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary">View Market Analysis</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Equipment Management -->
+                    <div class="dashboard-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4>Equipment</h4>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-plus"></i> Add Equipment
+                            </button>
+                        </div>
+                        
+                        <div class="equipment-card">
+                            <div class="equipment-icon">
+                                <i class="fas fa-tractor"></i>
+                            </div>
+                            <div class="equipment-details">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Tractor - John Deere</h6>
+                                    <span class="equipment-status status-available">Available</span>
+                                </div>
+                                <div class="text-muted">Last maintenance: Feb 15, 2025</div>
+                            </div>
+                        </div>
+                        
+                        <div class="equipment-card">
+                            <div class="equipment-icon">
+                                <i class="fas fa-truck-monster"></i>
+                            </div>
+                            <div class="equipment-details">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Harvester - New Holland</h6>
+                                    <span class="equipment-status status-in-use">In Use</span>
+                                </div>
+                                <div class="text-muted">Last maintenance: Jan 20, 2025</div>
+                            </div>
+                        </div>
+                        
+                        <div class="equipment-card">
+                            <div class="equipment-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="equipment-details">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Transport Truck</h6>
+                                    <span class="equipment-status status-maintenance">Maintenance</span>
+                                </div>
+                                <div class="text-muted">Under repair until: Apr 5, 2025</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary">Manage Equipment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Crop Modal -->
+    <div class="modal fade" id="addCropModal" tabindex="-1" aria-labelledby="addCropModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCropModalLabel">Add New Crop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCropForm">
+                        <div class="crop-form-group">
+                            <label for="cropName">Crop Name</label>
+                            <input type="text" class="form-control" id="cropName" required>
+                        </div>
+                        
+                        <div class="crop-form-group">
+                            <label for="cropType">Crop Type</label>
+                            <select class="form-control" id="cropType" required>
+                                <option value="">Select Crop Type</option>
+                                <option value="grains">Grains</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="fruits">Fruits</option>
+                                <option value="pulses">Pulses</option>
+                                <option value="oilseeds">Oilseeds</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="crop-form-group">
+                                    <label for="quantity">Quantity (kg)</label>
+                                    <input type="number" class="form-control" id="quantity" min="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="crop-form-group">
+                                    <label for="pricePerKg">Price per kg ($)</label>
+                                    <input type="number" class="form-control" id="pricePerKg" min="0.01" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="crop-form-group">
+                            <label for="harvestDate">Expected Harvest Date</label>
+                            <input type="date" class="form-control" id="harvestDate" required>
+                        </div>
+                        
+                        <div class="crop-form-group">
+                            <label for="cropDescription">Description</label>
+                            <textarea class="form-control" id="cropDescription" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="crop-form-group">
+                            <label for="cropImage">Crop Image</label>
+                            <input type="file" class="form-control" id="cropImage">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveCropBtn">Add Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Sidebar Toggle Functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('active');
+        });
+        
+        // Revenue Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: [1200, 1900, 1500, 2500, 2800, 3240],
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        borderColor: 'rgba(76, 175, 80, 1)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Market Trends Chart
+            const marketCtx = document.getElementById('marketTrendsChart').getContext('2d');
+            const marketChart = new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Wheat',
+                            data: [0.75, 0.78, 0.80, 0.79, 0.81, 0.82],
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Rice',
+                            data: [1.10, 1.15, 1.18, 1.20, 1.17, 1.15],
+                            borderColor: '#2196F3',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Corn',
+                            data: [0.60, 0.62, 0.63, 0.65, 0.67, 0.68],
+                            borderColor: '#FFC107',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Add Crop Functionality
+        document.getElementById('saveCropBtn').addEventListener('click', function() {
+            const form = document.getElementById('addCropForm');
+            if (form.checkValidity()) {
+                // Here you would normally send the form data to your backend
+                alert('Crop added successfully!');
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addCropModal'));
+                modal.hide();
+                
+                // Reset the form
+                form.reset();
+            } else {
+                form.reportValidity();
+            }
+        });
+    </script>
+</body>
+</html>

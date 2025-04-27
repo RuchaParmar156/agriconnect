@@ -1,0 +1,333 @@
+/* Global Styles */
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #388E3C;
+    --accent-color: #8BC34A;
+    --text-color: #333;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-success:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: var(--box-shadow);
+    padding: 15px 0;
+    transition: var(--transition);
+}
+
+.navbar-scrolled {
+    padding: 10px 0;
+    background-color: white !important;
+}
+
+.navbar-white {
+    background-color: white;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.nav-link {
+    font-weight: 500;
+    margin: 0 5px;
+}
+
+/* Hero Section */
+.hero-section {
+    padding-top: 80px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-section h1 {
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+.hero-section p {
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+}
+
+.hero-buttons {
+    margin-top: 30px;
+}
+
+/* Features Section */
+.feature-card {
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    height: 100%;
+    transition: var(--transition);
+    background-color: white;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.feature-card.animated {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card i {
+    color: var(--primary-color);
+}
+
+.feature-card h3 {
+    margin: 20px 0;
+    font-weight: 600;
+}
+
+/* How It Works Section */
+.step-card {
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-top: 30px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+}
+
+.step-card ul li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.step-card ul li i {
+    margin-right: 8px;
+}
+
+.step-card.animated {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.step-card h4 {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--dark-color);
+}
+
+.footer h5 {
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer p, .footer a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 36px;
+    margin-right: 10px;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .hero-section {
+        text-align: center;
+        padding-top: 120px;
+    }
+    
+    .hero-section img {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .step-card {
+        margin-bottom: 40px;
+    }
+    
+    .feature-card {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    .benefit-card {
+        margin-bottom: 15px;
+    }
+
+    .feature-banner {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.benefit-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    background: #ffffff;
+}
+
+.testimonial-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #555;
+}
+
+.testimonial-author {
+    font-weight: 600;
+    color: #333;
+}
+
+.feature-banner {
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    box-shadow: none;
+}
+
+.text-center.mb-1 {
+    margin-bottom: 0.25rem !important;
+}
+
+.text-center.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.text-center.mb-3 {
+    margin-bottom: 0.5rem !important;
+}

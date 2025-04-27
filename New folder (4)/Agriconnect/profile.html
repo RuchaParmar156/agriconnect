@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | AgriConnect</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #C8E6C9;
+            --accent-color: #FF9800;
+            --text-dark: #212121;
+            --text-medium: #757575;
+            --text-light: #FAFAFA;
+            --border-color: #EEEEEE;
+            --danger-color: #F44336;
+            --success-color: #4CAF50;
+            --warning-color: #FFC107;
+            --info-color: #2196F3;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            color: var(--text-dark);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .profile-header {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-light);
+        }
+        
+        .profile-nav .nav-link {
+            color: var(--text-medium);
+            border-radius: 0;
+            padding: 10px 15px;
+            font-weight: 500;
+        }
+        
+        .profile-nav .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .profile-nav .nav-link:hover:not(.active) {
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .profile-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .verification-badge {
+            color: var(--success-color);
+            font-size: 0.9rem;
+        }
+        
+        .activity-item {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .activity-date {
+            color: var(--text-medium);
+            font-size: 0.85rem;
+        }
+        
+        .transaction-badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .rating-stars {
+            color: var(--warning-color);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>AgriConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contracts.html">Contracts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="chat.html">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="payment.html">Payments</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>Michael Johnson
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item active" href="profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+                            <li><a class="dropdown-item" href="farmer-dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4 flex-grow-1">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center text-md-start mb-3 mb-md-0">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Picture" class="profile-pic">
+                </div>
+                <div class="col-md-7 text-center text-md-start">
+                    <h2 class="mb-1">Michael Johnson <i class="fas fa-check-circle ms-2 verification-badge" data-bs-toggle="tooltip" title="Verified Farmer"></i></h2>
+                    <p class="text-muted mb-2">Johnson Family Farms | Farmer</p>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Farmington, CA | <i class="fas fa-user me-2"></i>Member since March 2023</p>
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                        <div class="me-3">
+                            <span class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="ms-1">4.5/5</span>
+                        </div>
+                        <div>
+                            <span class="badge bg-success me-2">23 Contracts</span>
+                            <span class="badge bg-primary">Organic Certified</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-outline-primary me-2" data-action="edit-profile" data-editing="false"><i class="fas fa-edit me-1"></i>Edit Profile</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Navigation -->
+        <ul class="nav nav-tabs profile-nav mb-4" id="profileTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">
+                    <i class="fas fa-user me-2"></i>Personal Info
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab" aria-controls="transactions" aria-selected="false">
+                    <i class="fas fa-exchange-alt me-2"></i>Transactions
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="false">
+                    <i class="fas fa-shield-alt me-2"></i>Security
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab" aria-controls="preferences" aria-selected="false">
+                    <i class="fas fa-cog me-2"></i>Preferences
+                </button>
+            </li>
+        </ul>
+        
+        <!-- Profile Content -->
+        <div class="tab-content" id="profileTabContent">
+            <!-- Personal Information Tab -->
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Basic Information -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Basic Information</h5>
+                            <form>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" value="Michael" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" value="Johnson" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" value="michael@johnsonfarms.com" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="phone" value="(555) 123-4567" disabled>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="farmName" class="form-label">Farm/Business Name</label>
+                                    <input type="text" class="form-control" id="farmName" value="Johnson Family Farms" disabled>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="role" class="form-label">Role</label>
+                                        <select class="form-select" id="role" disabled>
+                                            <option selected>Farmer</option>
+                                            <option>Buyer</option>
+                                        </select>
+                                        <div class="form-text">Role cannot be changed after registration</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="joinDate" class="form-label">Member Since</label>
+                                        <input type="text" class="form-control" id="joinDate" value="March 15, 2023" disabled>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea class="form-control" id="bio" rows="3" disabled>We are a family-owned farm specializing in organic produce. Our farm has been in operation for over 30 years, focusing on sustainable farming practices and high-quality crops.</textarea>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Address Information -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Address Information</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="streetAddress" class="form-label">Street Address</label>
+                                    <input type="text" class="form-control" id="streetAddress" value="789 Wheat Field Road" disabled>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="city" value="Farmington" disabled>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="state" class="form-label">State</label>
+                                        <select class="form-select" id="state" disabled>
+                                            <option selected>CA</option>
+                                            <option>NY</option>
+                                            <option>TX</option>
+                                            <option>FL</option>
+                                            <option>IL</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="zipCode" class="form-label">Zip Code</label>
+                                        <input type="text" class="form-control" id="zipCode" value="94125" disabled>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="country" class="form-label">Country</label>
+                                    <select class="form-select" id="country" disabled>
+                                        <option selected>United States</option>
+                                        <option>Canada</option>
+                                        <option>Mexico</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <!-- Profile Picture -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Profile Picture</h5>
+                            <div class="text-center mb-3">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary">
+                                        <i class="fas fa-upload me-2"></i>Upload New Picture
+                                    </button>
+                                    <button class="btn btn-outline-danger">
+                                        <i class="fas fa-trash-alt me-2"></i>Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-text text-center">
+                                Recommended image size: 300x300 pixels<br>
+                                Maximum file size: 2MB
+                            </div>
+                        </div>
+                        
+                        <!-- Certifications -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Certifications</h5>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <p class="mb-0 fw-bold">Organic Certification</p>
+                                    <small class="text-muted">Issued: Jan 15, 2023 | Expires: Jan 15, 2026</small>
+                                </div>
+                                <span class="badge bg-success">Verified</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <p class="mb-0 fw-bold">Sustainable Farming</p>
+                                    <small class="text-muted">Issued: Mar 10, 2023 | Expires: Mar 10, 2025</small>
+                                </div>
+                                <span class="badge bg-success">Verified</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-0 fw-bold">Fair Trade Certified</p>
+                                    <small class="text-muted">Issued: Jul 22, 2023 | Expires: Jul 22, 2025</small>
+                                </div>
+                                <span class="badge bg-success">Verified</span>
+                            </div>
+                            <hr>
+                            <button class="btn btn-outline-primary btn-sm w-100">
+                                <i class="fas fa-plus-circle me-2"></i>Add New Certification
+                            </button>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Recent Activity</h5>
+                            <div class="activity-item">
+                                <p class="mb-1">Added new crop listing: Organic Tomatoes</p>
+                                <p class="activity-date mb-0">Today, 10:45 AM</p>
+                            </div>
+                            <div class="activity-item">
+                                <p class="mb-1">Completed contract #CTR-2025-042 with Green Farms Ltd.</p>
+                                <p class="activity-date mb-0">Yesterday, 3:20 PM</p>
+                            </div>
+                            <div class="activity-item">
+                                <p class="mb-1">Updated farm certification documents</p>
+                                <p class="activity-date mb-0">Mar 25, 2025</p>
+                            </div>
+                            <div class="activity-item">
+                                <p class="mb-1">Received payment for Wheat Contract #1234</p>
+                                <p class="activity-date mb-0">Mar 20, 2025</p>
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="#" class="text-decoration-none">View All Activity</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Tab -->
+            <div class="tab-pane fade" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+                <div class="profile-section">
+                    <h5 class="section-title">Transaction Summary</h5>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-3">
+                            <div class="card text-center h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <i class="fas fa-money-bill-wave text-success fa-2x mb-3"></i>
+                                    <h5 class="card-title">$24,560</h5>
+                                    <p class="card-text text-muted">Total Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <i class="fas fa-file-invoice-dollar text-primary fa-2x mb-3"></i>
+                                    <h5 class="card-title">42</h5>
+                                    <p class="card-text text-muted">Total Invoices</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <i class="fas fa-handshake text-info fa-2x mb-3"></i>
+                                    <h5 class="card-title">23</h5>
+                                    <p class="card-text text-muted">Completed Contracts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <i class="fas fa-chart-line text-warning fa-2x mb-3"></i>
+                                    <h5 class="card-title">18.5%</h5>
+                                    <p class="card-text text-muted">Growth Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Recent Transactions</h6>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-secondary active">All</button>
+                                <button type="button" class="btn btn-outline-secondary">Incoming</button>
+                                <button type="button" class="btn btn-outline-secondary">Outgoing</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">TRX-2025-0089</a></td>
+                                    <td>Mar 27, 2025</td>
+                                    <td>Payment for Organic Tomatoes Contract</td>
+                                    <td class="text-success">+$3,250.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">TRX-2025-0088</a></td>
+                                    <td>Mar 25, 2025</td>
+                                    <td>Certification Renewal Fee</td>
+                                    <td class="text-danger">-$350.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">TRX-2025-0087</a></td>
+                                    <td>Mar 20, 2025</td>
+                                    <td>Payment for Wheat Contract #1234</td>
+                                    <td class="text-success">+$5,750.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">TRX-2025-0086</a></td>
+                                    <td>Mar 15, 2025</td>
+                                    <td>Equipment Purchase - Irrigation System</td>
+                                    <td class="text-danger">-$1,200.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">TRX-2025-0085</a></td>
+                                    <td>Mar 10, 2025</td>
+                                    <td>Payment for Organic Carrots Contract</td>
+                                    <td class="text-success">+$2,800.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="payment.html" class="btn btn-outline-primary">View All Transactions</a>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h5 class="section-title">Invoices</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">INV-2025-042</a></td>
+                                    <td>Mar 25, 2025</td>
+                                    <td>Green Farms Ltd.</td>
+                                    <td>$3,250.00</td>
+                                    <td>Apr 25, 2025</td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#invoiceDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">INV-2025-041</a></td>
+                                    <td>Mar 15, 2025</td>
+                                    <td>Organic Wholesalers Inc.</td>
+                                    <td>$5,750.00</td>
+                                    <td>Apr 15, 2025</td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#invoiceDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">INV-2025-040</a></td>
+                                    <td>Mar 05, 2025</td>
+                                    <td>Farm Fresh Markets</td>
+                                    <td>$2,800.00</td>
+                                    <td>Apr 05, 2025</td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#invoiceDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#" class="text-decoration-none">INV-2025-039</a></td>
+                                    <td>Feb 25, 2025</td>
+                                    <td>Nature's Best Foods</td>
+                                    <td>$4,200.00</td>
+                                    <td>Mar 25, 2025</td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#invoiceDetailModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="payment.html" class="btn btn-outline-primary">View All Invoices</a>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h5 class="section-title">Revenue Analytics</h5>
+                    <div class="row">
+                        <div class="col-md-8 mb-4 mb-md-0">
+                            <canvas id="revenueChart" height="300"></canvas>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Top Products by Revenue</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Organic Tomatoes
+                                            <span class="badge bg-primary rounded-pill">$8,450</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Wheat
+                                            <span class="badge bg-primary rounded-pill">$7,200</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Organic Carrots
+                                            <span class="badge bg-primary rounded-pill">$5,350</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Lettuce
+                                            <span class="badge bg-primary rounded-pill">$3,560</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title">Top Buyers</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Green Farms Ltd.
+                                            <span class="badge bg-success rounded-pill">$9,250</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Organic Wholesalers Inc.
+                                            <span class="badge bg-success rounded-pill">$7,750</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Farm Fresh Markets
+                                            <span class="badge bg-success rounded-pill">$4,800</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Nature's Best Foods
+                                            <span class="badge bg-success rounded-pill">$2,760</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Tab -->
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Password Management -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Password Management</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword">
+                                    <div class="form-text">
+                                        Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Password</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Two-Factor Authentication -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Two-Factor Authentication</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <p class="mb-1 fw-bold">Enhance your account security</p>
+                                    <p class="mb-0 text-muted">Add an extra layer of security to your account by enabling two-factor authentication.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="twoFactorToggle">
+                                </div>
+                            </div>
+                            <div class="mb-4 p-3 border rounded bg-light d-none" id="twoFactorSetup">
+                                <h6 class="mb-3">Setup Two-Factor Authentication</h6>
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                                        <img src="https://via.placeholder.com/150x150?text=QR+Code" alt="QR Code" class="img-fluid border">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>Scan this QR code with your authenticator app or enter the code manually:</p>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" value="ABCD-EFGH-IJKL-MNOP" readonly>
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="verificationCode" class="form-label">Verification Code</label>
+                                            <input type="text" class="form-control" id="verificationCode" placeholder="Enter 6-digit code">
+                                        </div>
+                                        <button type="button" class="btn btn-primary">Verify & Enable</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span>We recommend using authenticator apps like Google Authenticator or Authy for two-factor authentication.</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Login Sessions -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Active Sessions</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Device</th>
+                                            <th>Location</th>
+                                            <th>IP Address</th>
+                                            <th>Last Activity</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <i class="fas fa-laptop me-2"></i>Windows PC
+                                                <span class="badge bg-success ms-2">Current</span>
+                                            </td>
+                                            <td>Farmington, CA</td>
+                                            <td>192.168.1.1</td>
+                                            <td>Just now</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-mobile-alt me-2"></i>iPhone 13</td>
+                                            <td>Farmington, CA</td>
+                                            <td>192.168.1.2</td>
+                                            <td>2 hours ago</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-tablet-alt me-2"></i>iPad Pro</td>
+                                            <td>Farmington, CA</td>
+                                            <td>192.168.1.3</td>
+                                            <td>Yesterday</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-outline-danger">
+                                <i class="fas fa-power-off me-2"></i>Logout of All Other Devices
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <!-- Security Status -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Security Status</h5>
+                            <div class="text-center mb-3">
+                                <div class="position-relative d-inline-block">
+                                    <canvas id="securityScoreChart" width="150" height="150"></canvas>
+                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                        <h3 class="mb-0">70%</h3>
+                                        <p class="mb-0 small">Security Score</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span><i class="fas fa-check-circle text-success me-2"></i>Strong Password</span>
+                                    <span class="badge bg-success">Completed</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span><i class="fas fa-times-circle text-danger me-2"></i>Two-Factor Authentication</span>
+                                    <span class="badge bg-danger">Not Enabled</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span><i class="fas fa-check-circle text-success me-2"></i>Email Verified</span>
+                                    <span class="badge bg-success">Completed</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span><i class="fas fa-check-circle text-success me-2"></i>Phone Verified</span>
+                                    <span class="badge bg-success">Completed</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span><i class="fas fa-times-circle text-danger me-2"></i>Recovery Email</span>
+                                    <span class="badge bg-danger">Not Set</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Security Notifications -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Security Notifications</h5>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="loginAlerts" checked>
+                                <label class="form-check-label" for="loginAlerts">
+                                    Login Alerts
+                                    <div class="form-text">Receive notifications when your account is accessed from a new device or location.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="passwordChanges" checked>
+                                <label class="form-check-label" for="passwordChanges">
+                                    Password Changes
+                                    <div class="form-text">Get notified when your password is changed.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="paymentAlerts" checked>
+                                <label class="form-check-label" for="paymentAlerts">
+                                    Payment Alerts
+                                    <div class="form-text">Receive notifications for payment activities in your account.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="contractAlerts" checked>
+                                <label class="form-check-label" for="contractAlerts">
+                                    Contract Alerts
+                                    <div class="form-text">Get notified about changes to your contracts.</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Recovery -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Account Recovery</h5>
+                            <div class="mb-3">
+                                <label for="recoveryEmail" class="form-label">Recovery Email</label>
+                                <input type="email" class="form-control" id="recoveryEmail" placeholder="Enter recovery email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recoveryPhone" class="form-label">Recovery Phone</label>
+                                <input type="tel" class="form-control" id="recoveryPhone" value="(555) 123-4567">
+                            </div>
+                            <button type="button" class="btn btn-primary">Save Recovery Options</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preferences Tab -->
+            <div class="tab-pane fade" id="preferences" role="tabpanel" aria-labelledby="preferences-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Notification Preferences -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Notification Preferences</h5>
+                            <div class="mb-4">
+                                <h6 class="mb-3">Email Notifications</h6>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailNewContracts" checked>
+                                    <label class="form-check-label" for="emailNewContracts">
+                                        New Contract Requests
+                                        <div class="form-text">Receive email notifications when you get new contract requests.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailContractUpdates" checked>
+                                    <label class="form-check-label" for="emailContractUpdates">
+                                        Contract Updates
+                                        <div class="form-text">Get notified when there are updates to your existing contracts.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailPayments" checked>
+                                    <label class="form-check-label" for="emailPayments">
+                                        Payment Notifications
+                                        <div class="form-text">Receive emails about payments received or due.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailMessages" checked>
+                                    <label class="form-check-label" for="emailMessages">
+                                        New Messages
+                                        <div class="form-text">Get notified when you receive new messages from buyers or farmers.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailMarketUpdates">
+                                    <label class="form-check-label" for="emailMarketUpdates">
+                                        Market Updates
+                                        <div class="form-text">Receive weekly updates about market trends and prices.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="emailPromotions">
+                                    <label class="form-check-label" for="emailPromotions">
+                                        Promotions and News
+                                        <div class="form-text">Receive updates about AgriConnect features and agricultural news.</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="mb-3">SMS Notifications</h6>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="smsUrgentUpdates" checked>
+                                    <label class="form-check-label" for="smsUrgentUpdates">
+                                        Urgent Updates
+                                        <div class="form-text">Receive SMS for urgent contract or payment matters.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="smsSecurityAlerts" checked>
+                                    <label class="form-check-label" for="smsSecurityAlerts">
+                                        Security Alerts
+                                        <div class="form-text">Get SMS notifications for important security events.</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h6 class="mb-3">In-App Notifications</h6>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="appAllNotifications" checked>
+                                    <label class="form-check-label" for="appAllNotifications">
+                                        All Notifications
+                                        <div class="form-text">Receive all notifications within the app.</div>
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="appSoundNotifications" checked>
+                                    <label class="form-check-label" for="appSoundNotifications">
+                                        Sound Notifications
+                                        <div class="form-text">Play sound for new notifications.</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-primary">Save Notification Preferences</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Display Preferences -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Display Preferences</h5>
+                            <div class="mb-4">
+                                <h6 class="mb-3">Theme</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="card border h-100">
+                                            <div class="card-body p-2 text-center">
+                                                <div class="mb-2" style="height: 100px; background: linear-gradient(to bottom, #ffffff, #f8f9fa);"></div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="themeOptions" id="lightTheme" checked>
+                                                    <label class="form-check-label" for="lightTheme">Light</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border h-100">
+                                            <div class="card-body p-2 text-center">
+                                                <div class="mb-2" style="height: 100px; background: linear-gradient(to bottom, #343a40, #212529);"></div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="themeOptions" id="darkTheme">
+                                                    <label class="form-check-label" for="darkTheme">Dark</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border h-100">
+                                            <div class="card-body p-2 text-center">
+                                                <div class="mb-2" style="height: 100px; background: linear-gradient(to bottom, #4CAF50, #388E3C);"></div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="themeOptions" id="greenTheme">
+                                                    <label class="form-check-label" for="greenTheme">Green</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="mb-3">Dashboard Layout</h6>
+                                <select class="form-select">
+                                    <option selected>Compact</option>
+                                    <option>Comfortable</option>
+                                    <option>Spacious</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="mb-3">Table Display</h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="showPagination" checked>
+                                    <label class="form-check-label" for="showPagination">
+                                        Show Pagination
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="enableSorting" checked>
+                                    <label class="form-check-label" for="enableSorting">
+                                        Enable Sorting
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableFiltering" checked>
+                                    <label class="form-check-label" for="enableFiltering">
+                                        Enable Filtering
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button type="button" class="btn btn-primary">Save Display Preferences</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <!-- Language and Region -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Language and Region</h5>
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language">
+                                    <option selected>English (US)</option>
+                                    <option>Spanish</option>
+                                    <option>French</option>
+                                    <option>German</option>
+                                    <option>Chinese (Simplified)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="timezone" class="form-label">Time Zone</label>
+                                <select class="form-select" id="timezone">
+                                    <option selected>(GMT-08:00) Pacific Time</option>
+                                    <option>(GMT-07:00) Mountain Time</option>
+                                    <option>(GMT-06:00) Central Time</option>
+                                    <option>(GMT-05:00) Eastern Time</option>
+                                    <option>(GMT) Greenwich Mean Time</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateFormat" class="form-label">Date Format</label>
+                                <select class="form-select" id="dateFormat">
+                                    <option selected>MM/DD/YYYY</option>
+                                    <option>DD/MM/YYYY</option>
+                                    <option>YYYY-MM-DD</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="currency" class="form-label">Currency</label>
+                                <select class="form-select" id="currency">
+                                    <option selected>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                    <option>GBP (£)</option>
+                                    <option>CAD (C$)</option>
+                                    <option>AUD (A$)</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary">Save Region Settings</button>
+                        </div>
+                        
+                        <!-- Privacy Settings -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Privacy Settings</h5>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="profileVisibility" checked>
+                                <label class="form-check-label" for="profileVisibility">
+                                    Public Profile
+                                    <div class="form-text">Make your profile visible to other users on the platform.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="showContactInfo">
+                                <label class="form-check-label" for="showContactInfo">
+                                    Show Contact Information
+                                    <div class="form-text">Display your contact information on your public profile.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="showTransactionHistory">
+                                <label class="form-check-label" for="showTransactionHistory">
+                                    Show Transaction History
+                                    <div class="form-text">Allow others to see your transaction history.</div>
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="allowDataCollection" checked>
+                                <label class="form-check-label" for="allowDataCollection">
+                                    Data Collection
+                                    <div class="form-text">Allow us to collect usage data to improve your experience.</div>
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-primary">Save Privacy Settings</button>
+                        </div>
+                        
+                        <!-- Export Data -->
+                        <div class="profile-section">
+                            <h5 class="section-title">Data Management</h5>
+                            <p class="text-muted mb-3">You can export your data or request account deletion at any time.</p>
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="fas fa-file-export me-2"></i>Export My Data
+                                </button>
+                                <button type="button" class="btn btn-outline-danger">
+                                    <i class="fas fa-user-times me-2"></i>Request Account Deletion
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-light py-3 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 AgriConnect. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-decoration-none">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Profile Page JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue Chart
+            if (document.getElementById('revenueChart')) {
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Revenue ($)',
+                            data: [3200, 4100, 3800, 5200, 4800, 7250],
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+            
+            // Edit Profile Button
+            const editProfileBtn = document.querySelector('[data-action="edit-profile"]');
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    const isEditing = this.getAttribute('data-editing') === 'true';
+                    const inputs = document.querySelectorAll('#personal input, #personal textarea, #personal select');
+                    
+                    if (isEditing) {
+                        // Save changes
+                        this.innerHTML = '<i class="fas fa-edit me-1"></i>Edit Profile';
+                        this.setAttribute('data-editing', 'false');
+                        inputs.forEach(input => input.setAttribute('disabled', 'disabled'));
+                        
+                        // Show success message
+                        alert('Profile updated successfully!');
+                    } else {
+                        // Enable editing
+                        this.innerHTML = '<i class="fas fa-save me-1"></i>Save Changes';
+                        this.setAttribute('data-editing', 'true');
+                        inputs.forEach(input => input.removeAttribute('disabled'));
+                    }
+                });
+            }
+            
+            // Two-Factor Authentication Toggle
+            const twoFactorToggle = document.getElementById('twoFactorToggle');
+            const twoFactorSetup = document.getElementById('twoFactorSetup');
+            if (twoFactorToggle && twoFactorSetup) {
+                twoFactorToggle.addEventListener('change', function() {
+                    twoFactorSetup.classList.toggle('d-none', !this.checked);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

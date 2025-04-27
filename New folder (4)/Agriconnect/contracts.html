@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contracts - AgriConnect</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2E7D32;
+            --light-color: #E8F5E9;
+            --dark-color: #1B5E20;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .nav-link {
+            color: #555;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .page-header {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .content-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .filter-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .contract-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .contract-card {
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .contract-card:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .contract-card:last-child {
+            border-bottom: none;
+        }
+        
+        .progress {
+            height: 10px;
+        }
+        
+        .contract-details-section {
+            display: none;
+        }
+        
+        .contract-details-section.active {
+            display: block;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #ddd;
+        }
+        
+        .timeline-item:last-child:before {
+            height: 50%;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="AgriConnect Logo" height="30" class="d-inline-block align-top me-2" onerror="this.src='https://via.placeholder.com/120x30?text=AgriConnect'">
+                AgriConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="farmer-dashboard.html">Farmer Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="buyer-dashboard.html">Buyer Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contracts.html">Contracts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="chat.html">Messages</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-3">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge bg-danger">3</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <li><a class="dropdown-item" href="#">New contract proposal</a></li>
+                            <li><a class="dropdown-item" href="#">Contract #1234 updated</a></li>
+                            <li><a class="dropdown-item" href="#">Payment received</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> John Doe
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <div class="container mt-4">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="mb-0">Contract Management</h2>
+                    <p class="text-muted mb-0">View and manage all your farming contracts</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newContractModal">
+                        <i class="fas fa-plus me-1"></i> New Contract
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="row">
+            <!-- Contract List -->
+            <div class="col-lg-12">
+                <div class="content-card">
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label for="statusFilter" class="form-label">Status</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="active">Active</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cropFilter" class="form-label">Crop Type</label>
+                                <select class="form-select" id="cropFilter">
+                                    <option value="all">All Crops</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="rice">Rice</option>
+                                    <option value="corn">Corn</option>
+                                    <option value="soybeans">Soybeans</option>
+                                    <option value="potatoes">Potatoes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dateFilter" class="form-label">Date Range</label>
+                                <select class="form-select" id="dateFilter">
+                                    <option value="all">All Time</option>
+                                    <option value="last30">Last 30 Days</option>
+                                    <option value="last90">Last 90 Days</option>
+                                    <option value="thisYear">This Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="searchContract" class="form-label">Search</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="searchContract" placeholder="Contract ID, Partner...">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contract List -->
+                    <div class="p-0">
+                        <!-- Contract Item -->
+                        <div class="contract-card p-3" data-contract-id="C1001">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">Wheat Supply Contract</h5>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <span class="me-2"><i class="fas fa-hashtag"></i> C1001</span>
+                                            <span class="me-2"><i class="fas fa-user"></i> Green Farms Ltd.</span>
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-1">
+                                        <small class="text-muted">Progress:</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">75% Complete</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="contract-status status-active">Active</span>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Due: Jun 30, 2023</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-sm btn-outline-primary view-contract-btn">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contract Item -->
+                        <div class="contract-card p-3" data-contract-id="C1002">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">Rice Supply Agreement</h5>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <span class="me-2"><i class="fas fa-hashtag"></i> C1002</span>
+                                            <span class="me-2"><i class="fas fa-user"></i> Eastern Rice Producers</span>
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-1">
+                                        <small class="text-muted">Progress:</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">30% Complete</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="contract-status status-active">Active</span>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Due: Aug 15, 2023</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-sm btn-outline-primary view-contract-btn">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contract Item -->
+                        <div class="contract-card p-3" data-contract-id="C1003">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">Corn Futures Contract</h5>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <span class="me-2"><i class="fas fa-hashtag"></i> C1003</span>
+                                            <span class="me-2"><i class="fas fa-user"></i> Midwest Grain Co.</span>
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-1">
+                                        <small class="text-muted">Progress:</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Awaiting Approval</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="contract-status status-pending">Pending</span>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Start: Jul 1, 2023</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-sm btn-outline-primary view-contract-btn">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contract Item -->
+                        <div class="contract-card p-3" data-contract-id="C1004">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">Potato Supply Contract</h5>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <span class="me-2"><i class="fas fa-hashtag"></i> C1004</span>
+                                            <span class="me-2"><i class="fas fa-user"></i> Idaho Farms Inc.</span>
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-1">
+                                        <small class="text-muted">Progress:</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">100% Complete</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="contract-status status-completed">Completed</span>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Completed: May 15, 2023</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-sm btn-outline-primary view-contract-btn">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contract Item -->
+                        <div class="contract-card p-3" data-contract-id="C1005">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">Soybean Purchase Agreement</h5>
+                                    <p class="mb-0 text-muted">
+                                        <small>
+                                            <span class="me-2"><i class="fas fa-hashtag"></i> C1005</span>
+                                            <span class="me-2"><i class="fas fa-user"></i> Southern Farms Cooperative</span>
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-1">
+                                        <small class="text-muted">Progress:</small>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Cancelled</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="contract-status status-cancelled">Cancelled</span>
+                                    <div class="mt-1">
+                                        <small class="text-muted">Cancelled: Apr 10, 2023</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <button class="btn btn-sm btn-outline-primary view-contract-btn">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="p-3 border-top">
+                        <nav aria-label="Contract pagination">
+                            <ul class="pagination justify-content-center mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contract Details View -->
+            <div class="col-lg-12 mt-4" id="contractDetailsView" style="display: none;">
+                <div class="content-card">
+                    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Contract Details</h4>
+                        <button class="btn btn-sm btn-outline-secondary" id="closeContractDetails">
+                            <i class="fas fa-times me-1"></i> Close
+                        </button>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3 id="contractTitle">Wheat Supply Contract</h3>
+                                <p class="text-muted mb-4" id="contractPartner">
+                                    <i class="fas fa-handshake me-1"></i> Partner: <span>Green Farms Ltd.</span>
+                                </p>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">Contract ID</h6>
+                                            <p class="mb-0" id="contractId">C1001</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">Start Date</h6>
+                                            <p class="mb-0" id="contractStartDate">January 15, 2023</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">End Date</h6>
+                                            <p class="mb-0" id="contractEndDate">June 30, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">Status</h6>
+                                            <p class="mb-0">
+                                                <span class="contract-status status-active" id="contractStatus">Active</span>
+                                            </p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">Crop Type</h6>
+                                            <p class="mb-0" id="contractCropType">Wheat</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="text-muted mb-1">Quantity</h6>
+                                            <p class="mb-0" id="contractQuantity">500 tons</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h5>Contract Terms</h5>
+                                    <div class="p-3 bg-light rounded">
+                                        <p id="contractTerms">This agreement is made between Green Farms Ltd. (the "Supplier") and AgriConnect (the "Buyer") for the supply of 500 tons of wheat. The Supplier agrees to deliver the specified quantity of wheat meeting the quality standards outlined in Appendix A by June 30, 2023. Payment will be made within 30 days of delivery and acceptance of the goods.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h5>Delivery Schedule</h5>
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="deliveryScheduleTable">
+                                            <tr>
+                                                <td>March 15, 2023</td>
+                                                <td>100 tons</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>April 30, 2023</td>
+                                                <td>150 tons</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>May 30, 2023</td>
+                                                <td>125 tons</td>
+                                                <td><span class="badge bg-warning">In Progress</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>June 30, 2023</td>
+                                                <td>125 tons</td>
+                                                <td><span class="badge bg-secondary">Pending</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h5>Payment Details</h5>
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Invoice #</th>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="paymentDetailsTable">
+                                            <tr>
+                                                <td>INV-1001</td>
+                                                <td>March 20, 2023</td>
+                                                <td>$35,000</td>
+                                                <td><span class="badge bg-success">Paid</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>INV-1045</td>
+                                                <td>May 5, 2023</td>
+                                                <td>$52,500</td>
+                                                <td><span class="badge bg-success">Paid</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>INV-1078</td>
+                                                <td>June 5, 2023</td>
+                                                <td>$43,750</td>
+                                                <td><span class="badge bg-warning">Due in 10 days</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>INV-1102</td>
+                                                <td>July 5, 2023</td>
+                                                <td>$43,750</td>
+                                                <td><span class="badge bg-secondary">Pending</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="content-card mb-4">
+                                    <div class="p-3 border-bottom">
+                                        <h5 class="mb-0">Contract Progress</h5>
+                                    </div>
+                                    <div class="p-3">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Overall Completion</span>
+                                            <span>75%</span>
+                                        </div>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Delivery Progress</span>
+                                            <span>70%</span>
+                                        </div>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Payment Progress</span>
+                                            <span>65%</span>
+                                        </div>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="content-card mb-4">
+                                    <div class="p-3 border-bottom">
+                                        <h5 class="mb-0">Contract Timeline</h5>
+                                    </div>
+                                    <div class="p-3">
+                                        <div class="timeline">
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">Jan 15, 2023</div>
+                                                <div class="timeline-content">
+                                                    <h6>Contract Signed</h6>
+                                                    <p class="mb-0 text-muted">Contract was signed by both parties</p>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">Mar 15, 2023</div>
+                                                <div class="timeline-content">
+                                                    <h6>First Delivery</h6>
+                                                    <p class="mb-0 text-muted">100 tons of wheat delivered</p>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">Apr 30, 2023</div>
+                                                <div class="timeline-content">
+                                                    <h6>Second Delivery</h6>
+                                                    <p class="mb-0 text-muted">150 tons of wheat delivered</p>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">May 30, 2023</div>
+                                                <div class="timeline-content">
+                                                    <h6>Third Delivery</h6>
+                                                    <p class="mb-0 text-muted">125 tons of wheat in progress</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="content-card mb-4">
+                                    <div class="p-3 border-bottom">
+                                        <h5 class="mb-0">Contact Information</h5>
+                                    </div>
+                                    <div class="p-3">
+                                        <div class="mb-3">
+                                            <h6>Primary Contact</h6>
+                                            <p class="mb-0">John Smith</p>
+                                            <p class="mb-0"><i class="fas fa-envelope me-1"></i> john.smith@greenfarms.com</p>
+                                            <p class="mb-0"><i class="fas fa-phone me-1"></i> (555) 123-4567</p>
+                                        </div>
+                                        <div>
+                                            <h6>Secondary Contact</h6>
+                                            <p class="mb-0">Sarah Johnson</p>
+                                            <p class="mb-0"><i class="fas fa-envelope me-1"></i> sarah.johnson@greenfarms.com</p>
+                                            <p class="mb-0"><i class="fas fa-phone me-1"></i> (555) 987-6543</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#amendContractModal">
+                                        <i class="fas fa-edit me-1"></i> Amend Contract
+                                    </button>
+                                    <button class="btn btn-outline-primary">
+                                        <i class="fas fa-file-pdf me-1"></i> Download Contract
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-comment-alt me-1"></i> Message Partner
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle contract details view
+        document.querySelectorAll('.view-contract-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.getElementById('contractDetailsView').style.display = 'block';
+                // Scroll to contract details
+                document.getElementById('contractDetailsView').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        // Close contract details
+        document.getElementById('closeContractDetails').addEventListener('click', function() {
+            document.getElementById('contractDetailsView').style.display = 'none';
+        });
+    </script>
+    
+    <!-- New Contract Modal -->
+    <div class="modal fade" id="newContractModal" tabindex="-1" aria-labelledby="newContractModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newContractModalLabel">Create New Contract</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newContractForm">
+                        <div class="mb-4">
+                            <h6 class="mb-3">1. Basic Information</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="contractTitle" class="form-label">Contract Title</label>
+                                    <input type="text" class="form-control" id="contractTitle" placeholder="e.g. Wheat Supply Agreement">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contractType" class="form-label">Contract Type</label>
+                                    <select class="form-select" id="contractType">
+                                        <option selected disabled>Select contract type</option>
+                                        <option value="supply">Supply Agreement</option>
+                                        <option value="purchase">Purchase Agreement</option>
+                                        <option value="futures">Futures Contract</option>
+                                        <option value="distribution">Distribution Agreement</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cropType" class="form-label">Crop Type</label>
+                                    <select class="form-select" id="cropType">
+                                        <option selected disabled>Select crop type</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="rice">Rice</option>
+                                        <option value="corn">Corn</option>
+                                        <option value="soybeans">Soybeans</option>
+                                        <option value="potatoes">Potatoes</option>
+                                        <option value="other">Other (specify)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="otherCropType" class="form-label">Other Crop Type</label>
+                                    <input type="text" class="form-control" id="otherCropType" placeholder="If 'Other' is selected above">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-3">2. Partner Information</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="partnerType" class="form-label">Partner Type</label>
+                                    <select class="form-select" id="partnerType">
+                                        <option selected disabled>Select partner type</option>
+                                        <option value="farmer">Farmer</option>
+                                        <option value="buyer">Buyer</option>
+                                        <option value="distributor">Distributor</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="partnerSelect" class="form-label">Select Partner</label>
+                                    <select class="form-select" id="partnerSelect">
+                                        <option selected disabled>Select a partner</option>
+                                        <option value="1">Green Farms Ltd.</option>
+                                        <option value="2">Eastern Rice Producers</option>
+                                        <option value="3">Midwest Grain Co.</option>
+                                        <option value="4">Idaho Farms Inc.</option>
+                                        <option value="5">Southern Farms Cooperative</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newPartnerCheck">
+                                        <label class="form-check-label" for="newPartnerCheck">
+                                            Add a new partner
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 new-partner-field" style="display: none;">
+                                    <label for="newPartnerName" class="form-label">Partner Name</label>
+                                    <input type="text" class="form-control" id="newPartnerName" placeholder="Enter partner name">
+                                </div>
+                                <div class="col-md-6 new-partner-field" style="display: none;">
+                                    <label for="newPartnerEmail" class="form-label">Partner Email</label>
+                                    <input type="email" class="form-control" id="newPartnerEmail" placeholder="Enter partner email">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-3">3. Contract Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="startDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endDate" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="endDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="quantity" placeholder="Enter quantity">
+                                        <select class="form-select" id="quantityUnit">
+                                            <option value="tons">Tons</option>
+                                            <option value="kg">Kilograms</option>
+                                            <option value="bushels">Bushels</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pricePerUnit" class="form-label">Price per Unit</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="pricePerUnit" placeholder="Enter price per unit">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="paymentTerms" class="form-label">Payment Terms</label>
+                                    <select class="form-select" id="paymentTerms">
+                                        <option selected disabled>Select payment terms</option>
+                                        <option value="net15">Net 15 days</option>
+                                        <option value="net30">Net 30 days</option>
+                                        <option value="net45">Net 45 days</option>
+                                        <option value="net60">Net 60 days</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="deliveryMethod" class="form-label">Delivery Method</label>
+                                    <select class="form-select" id="deliveryMethod">
+                                        <option selected disabled>Select delivery method</option>
+                                        <option value="pickup">Buyer Pickup</option>
+                                        <option value="delivery">Seller Delivery</option>
+                                        <option value="thirdparty">Third-party Logistics</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-3">4. Quality Standards & Terms</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="qualityStandards" class="form-label">Quality Standards</label>
+                                    <textarea class="form-control" id="qualityStandards" rows="3" placeholder="Describe the quality standards required for this contract"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="additionalTerms" class="form-label">Additional Terms & Conditions</label>
+                                    <textarea class="form-control" id="additionalTerms" rows="3" placeholder="Enter any additional terms and conditions"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-3">5. Delivery Schedule</h6>
+                            <div id="deliveryScheduleContainer">
+                                <div class="delivery-schedule-item mb-3 p-3 border rounded">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Delivery Date</label>
+                                            <input type="date" class="form-control delivery-date">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Quantity</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control delivery-quantity" placeholder="Quantity">
+                                                <span class="input-group-text delivery-unit">tons</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 d-flex align-items-end">
+                                            <button type="button" class="btn btn-outline-danger remove-delivery-btn">
+                                                <i class="fas fa-trash-alt"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary" id="addDeliveryBtn">
+                                <i class="fas fa-plus"></i> Add Delivery Milestone
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveContractBtn">Create Contract</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Amend Contract Modal -->
+    <div class="modal fade" id="amendContractModal" tabindex="-1" aria-labelledby="amendContractModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="amendContractModalLabel">Amend Contract</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="amendContractForm">
+                        <div class="mb-3">
+                            <label for="amendmentType" class="form-label">Amendment Type</label>
+                            <select class="form-select" id="amendmentType">
+                                <option selected disabled>Select amendment type</option>
+                                <option value="quantity">Change Quantity</option>
+                                <option value="price">Change Price</option>
+                                <option value="date">Extend/Change Dates</option>
+                                <option value="terms">Modify Terms</option>
+                                <option value="cancel">Cancel Contract</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3 amendment-field" id="quantityAmendment" style="display: none;">
+                            <label for="newQuantity" class="form-label">New Quantity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="newQuantity">
+                                <span class="input-group-text">tons</span>
+                            </div>
+                            <div class="form-text">Current quantity: 500 tons</div>
+                        </div>
+                        
+                        <div class="mb-3 amendment-field" id="priceAmendment" style="display: none;">
+                            <label for="newPrice" class="form-label">New Price per Unit</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="newPrice">
+                            </div>
+                            <div class="form-text">Current price: $350 per ton</div>
+                        </div>
+                        
+                        <div class="mb-3 amendment-field" id="dateAmendment" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="newEndDate" class="form-label">New End Date</label>
+                                    <input type="date" class="form-control" id="newEndDate">
+                                    <div class="form-text">Current end date: Jun 30, 2023</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 amendment-field" id="termsAmendment" style="display: none;">
+                            <label for="newTerms" class="form-label">New Terms</label>
+                            <textarea class="form-control" id="newTerms" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3 amendment-field" id="cancelAmendment" style="display: none;">
+                            <label for="cancellationReason" class="form-label">Cancellation Reason</label>
+                            <textarea class="form-control" id="cancellationReason" rows="3"></textarea>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="penaltyWaiver">
+                                <label class="form-check-label" for="penaltyWaiver">
+                                    Request penalty waiver
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="amendmentReason" class="form-label">Reason for Amendment</label>
+                            <textarea class="form-control" id="amendmentReason" rows="3" placeholder="Explain why this amendment is necessary"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitAmendmentBtn">Submit Amendment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // New partner fields toggle
+        document.getElementById('newPartnerCheck').addEventListener('change', function() {
+            const newPartnerFields = document.querySelectorAll('.new-partner-field');
+            newPartnerFields.forEach(field => {
+                field.style.display = this.checked ? 'block' : 'none';
+            });
+        });
+        
+        // Add delivery milestone
+        document.getElementById('addDeliveryBtn').addEventListener('click', function() {
+            const container = document.getElementById('deliveryScheduleContainer');
+            const template = document.querySelector('.delivery-schedule-item').cloneNode(true);
+            
+            // Reset values in the cloned template
+            template.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+            
+            // Add event listener to remove button
+            template.querySelector('.remove-delivery-btn').addEventListener('click', function() {
+                container.removeChild(template);
+            });
+            
+            container.appendChild(template);
+        });
+        
+        // Amendment type change handler
+        document.getElementById('amendmentType').addEventListener('change', function() {
+            // Hide all amendment fields first
+            document.querySelectorAll('.amendment-field').forEach(field => {
+                field.style.display = 'none';
+            });
+            
+            // Show the selected amendment field
+            const selectedType = this.value;
+            if (selectedType) {
+                document.getElementById(selectedType + 'Amendment').style.display = 'block';
+            }
+        });
+        
+        // Save contract button
+        document.getElementById('saveContractBtn').addEventListener('click', function() {
+            // Here you would normally validate and submit the form
+            // For demo purposes, we'll just close the modal and show a success message
+            const modal = bootstrap.Modal.getInstance(document.getElementById('newContractModal'));
+            modal.hide();
+            
+            // You could show a success message or redirect to the new contract
+            alert('Contract created successfully!');
+        });
+        
+        // Submit amendment button
+        document.getElementById('submitAmendmentBtn').addEventListener('click', function() {
+            // Here you would normally validate and submit the form
+            // For demo purposes, we'll just close the modal and show a success message
+            const modal = bootstrap.Modal.getInstance(document.getElementById('amendContractModal'));
+            modal.hide();
+            
+            // You could show a success message or update the contract details
+            alert('Amendment request submitted successfully!');
+        });
+    </script>
+</body>
+</html>

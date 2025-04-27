@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - AgriConnect</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2E7D32;
+            --light-color: #E8F5E9;
+            --dark-color: #1B5E20;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .nav-link {
+            color: #555;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+        
+        .summary-card {
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .summary-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+        }
+        
+        .transaction-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .badge-completed {
+            background-color: var(--primary-color);
+        }
+        
+        .badge-pending {
+            background-color: #FFC107;
+            color: #212529;
+        }
+        
+        .badge-failed {
+            background-color: #DC3545;
+        }
+        
+        .payment-method-card {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .payment-method-card.default {
+            border-color: var(--primary-color);
+            background-color: var(--light-color);
+        }
+        
+        .default-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .invoice-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .invoice-item:last-child {
+            border-bottom: none;
+        }
+        
+        .invoice-status {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .status-paid {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .status-pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+        
+        .status-overdue {
+            background-color: #F8D7DA;
+            color: #721C24;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="AgriConnect Logo" height="30" class="d-inline-block align-top me-2" onerror="this.src='https://via.placeholder.com/120x30?text=AgriConnect'">
+                AgriConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="farmer-dashboard.html">Farmer Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="buyer-dashboard.html">Buyer Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contracts.html">Contracts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="chat.html">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="payment.html">Payments</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-3">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge bg-danger">3</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <li><a class="dropdown-item" href="#">New payment received</a></li>
+                            <li><a class="dropdown-item" href="#">Invoice #1234 due soon</a></li>
+                            <li><a class="dropdown-item" href="#">Payment method expiring</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> John Doe
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container py-4 flex-grow-1">
+        <h1 class="mb-4">Payment Management</h1>
+        
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card summary-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon me-3">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 text-muted">Available Balance</h6>
+                            <h4 class="card-title mb-0">$12,450.75</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card summary-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon me-3">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 text-muted">Income (This Month)</h6>
+                            <h4 class="card-title mb-0">$8,320.00</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card summary-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon me-3">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 text-muted">Expenses (This Month)</h6>
+                            <h4 class="card-title mb-0">$5,125.30</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card summary-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon me-3">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 text-muted">Pending Invoices</h6>
+                            <h4 class="card-title mb-0">4</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Tabs -->
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills" id="paymentTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab" aria-controls="transactions" aria-selected="true">Transaction History</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="payment-methods-tab" data-bs-toggle="tab" data-bs-target="#payment-methods" type="button" role="tab" aria-controls="payment-methods" aria-selected="false">Payment Methods</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices" type="button" role="tab" aria-controls="invoices" aria-selected="false">Invoices</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="make-payment-tab" data-bs-toggle="tab" data-bs-target="#make-payment" type="button" role="tab" aria-controls="make-payment" aria-selected="false">Make Payment</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="request-payment-tab" data-bs-toggle="tab" data-bs-target="#request-payment" type="button" role="tab" aria-controls="request-payment" aria-selected="false">Request Payment</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="paymentTabsContent">
+                    <!-- Transaction History Tab -->
+                    <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Recent Transactions</h5>
+                            <div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-filter me-1"></i> Filter
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">All Transactions</a></li>
+                                        <li><a class="dropdown-item" href="#">Incoming Only</a></li>
+                                        <li><a class="dropdown-item" href="#">Outgoing Only</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Completed</a></li>
+                                        <li><a class="dropdown-item" href="#">Pending</a></li>
+                                        <li><a class="dropdown-item" href="#">Failed</a></li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-outline-secondary ms-2">
+                                    <i class="fas fa-download me-1"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="transactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8721</a></td>
+                                        <td>Mar 28, 2025</td>
+                                        <td>Payment for Wheat Contract #1234</td>
+                                        <td class="text-success">+$2,450.00</td>
+                                        <td><span class="badge transaction-badge badge-completed">Completed</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View Receipt">
+                                                <i class="fas fa-file-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8720</a></td>
+                                        <td>Mar 25, 2025</td>
+                                        <td>Payment for Rice Contract #1122</td>
+                                        <td class="text-success">+$3,200.00</td>
+                                        <td><span class="badge transaction-badge badge-completed">Completed</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View Receipt">
+                                                <i class="fas fa-file-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8719</a></td>
+                                        <td>Mar 22, 2025</td>
+                                        <td>Payment for Corn Contract #0987</td>
+                                        <td class="text-danger">-$1,875.50</td>
+                                        <td><span class="badge transaction-badge badge-pending">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Track Payment">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8718</a></td>
+                                        <td>Mar 20, 2025</td>
+                                        <td>Platform Fee</td>
+                                        <td class="text-danger">-$125.00</td>
+                                        <td><span class="badge transaction-badge badge-completed">Completed</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View Receipt">
+                                                <i class="fas fa-file-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8717</a></td>
+                                        <td>Mar 18, 2025</td>
+                                        <td>Payment for Soybean Contract #0765</td>
+                                        <td class="text-success">+$2,670.00</td>
+                                        <td><span class="badge transaction-badge badge-completed">Completed</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View Receipt">
+                                                <i class="fas fa-file-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#transactionModal">#TRX-8716</a></td>
+                                        <td>Mar 15, 2025</td>
+                                        <td>Payment for Fertilizer</td>
+                                        <td class="text-danger">-$850.00</td>
+                                        <td><span class="badge transaction-badge badge-failed">Failed</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Retry Payment">
+                                                <i class="fas fa-redo"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <nav aria-label="Transaction pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+                    <!-- Make Payment Tab -->
+                    <div class="tab-pane fade" id="make-payment" role="tabpanel" aria-labelledby="make-payment-tab">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Make a Payment</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="makePaymentForm">
+                                            <!-- Payment Type Selection -->
+                                            <div class="mb-4">
+                                                <label class="form-label">Payment Type</label>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="paymentType" id="invoicePayment" value="invoice" checked>
+                                                            <label class="form-check-label d-flex align-items-center" for="invoicePayment">
+                                                                <i class="fas fa-file-invoice me-2" style="color: var(--primary-color);"></i>
+                                                                Pay Invoice
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="paymentType" id="contractPayment" value="contract">
+                                                            <label class="form-check-label d-flex align-items-center" for="contractPayment">
+                                                                <i class="fas fa-handshake me-2" style="color: var(--primary-color);"></i>
+                                                                Contract Payment
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="paymentType" id="directPayment" value="direct">
+                                                            <label class="form-check-label d-flex align-items-center" for="directPayment">
+                                                                <i class="fas fa-exchange-alt me-2" style="color: var(--primary-color);"></i>
+                                                                Direct Transfer
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Invoice Selection (shown when invoice payment is selected) -->
+                                            <div class="mb-4 payment-section" id="invoicePaymentSection">
+                                                <label for="invoiceSelect" class="form-label">Select Invoice</label>
+                                                <select class="form-select" id="invoiceSelect">
+                                                    <option value="" selected disabled>Choose an invoice to pay</option>
+                                                    <option value="INV-2025-003">INV-2025-003 - Midwest Grain Co. ($1,875.50)</option>
+                                                    <option value="INV-2025-004">INV-2025-004 - Idaho Farms Inc. ($2,670.00)</option>
+                                                    <option value="INV-2025-005">INV-2025-005 - Southern Farms Cooperative ($1,950.00)</option>
+                                                </select>
+                                                <div class="form-text">Select an outstanding invoice from the list above.</div>
+                                            </div>
+                                            
+                                            <!-- Contract Selection (shown when contract payment is selected) -->
+                                            <div class="mb-4 payment-section d-none" id="contractPaymentSection">
+                                                <label for="contractSelect" class="form-label">Select Contract</label>
+                                                <select class="form-select" id="contractSelect">
+                                                    <option value="" selected disabled>Choose a contract</option>
+                                                    <option value="CTR-2025-042">CTR-2025-042 - Organic Wheat Supply (Milestone 2 - $3,500.00)</option>
+                                                    <option value="CTR-2025-056">CTR-2025-056 - Rice Cultivation (Milestone 1 - $2,800.00)</option>
+                                                    <option value="CTR-2025-061">CTR-2025-061 - Corn Supply Agreement (Final Payment - $4,200.00)</option>
+                                                </select>
+                                                <div class="form-text">Select a contract with pending payment milestones.</div>
+                                            </div>
+                                            
+                                            <!-- Direct Payment Fields (shown when direct payment is selected) -->
+                                            <div class="mb-4 payment-section d-none" id="directPaymentSection">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="recipientSelect" class="form-label">Recipient</label>
+                                                        <select class="form-select" id="recipientSelect">
+                                                            <option value="" selected disabled>Select recipient</option>
+                                                            <option value="user1">Green Farms Ltd.</option>
+                                                            <option value="user2">Eastern Rice Producers</option>
+                                                            <option value="user3">Midwest Grain Co.</option>
+                                                            <option value="user4">Idaho Farms Inc.</option>
+                                                            <option value="user5">Southern Farms Cooperative</option>
+                                                            <option value="other">Add New Recipient</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="paymentPurpose" class="form-label">Payment Purpose</label>
+                                                        <input type="text" class="form-control" id="paymentPurpose" placeholder="e.g., Advance payment for wheat">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Amount Section -->
+                                            <div class="mb-4">
+                                                <label for="paymentAmount" class="form-label">Amount</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" class="form-control" id="paymentAmount" placeholder="0.00" step="0.01" min="0">
+                                                </div>
+                                                <div class="form-text" id="amountHelp">Enter the payment amount.</div>
+                                            </div>
+                                            
+                                            <!-- Payment Method Selection -->
+                                            <div class="mb-4">
+                                                <label class="form-label">Payment Method</label>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="payment-method-option selected">
+                                                            <input type="radio" name="paymentMethod" id="bankAccount" value="bank" class="d-none" checked>
+                                                            <label for="bankAccount" class="d-block p-3 rounded border h-100">
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="fas fa-university me-2" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                                                    <div>
+                                                                        <p class="mb-0 fw-bold">Bank Account</p>
+                                                                        <small class="text-muted">First National Bank ****4567</small>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="payment-method-option">
+                                                            <input type="radio" name="paymentMethod" id="creditCard" value="card" class="d-none">
+                                                            <label for="creditCard" class="d-block p-3 rounded border h-100">
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="fab fa-cc-visa me-2" style="font-size: 1.5rem; color: #1a1f71;"></i>
+                                                                    <div>
+                                                                        <p class="mb-0 fw-bold">Visa</p>
+                                                                        <small class="text-muted">Personal ****8901</small>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="payment-method-option">
+                                                            <input type="radio" name="paymentMethod" id="paypal" value="paypal" class="d-none">
+                                                            <label for="paypal" class="d-block p-3 rounded border h-100">
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="fab fa-paypal me-2" style="font-size: 1.5rem; color: #003087;"></i>
+                                                                    <div>
+                                                                        <p class="mb-0 fw-bold">PayPal</p>
+                                                                        <small class="text-muted">Business Account</small>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addPaymentMethodModal">
+                                                        <i class="fas fa-plus-circle me-1"></i> Add New Payment Method
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Notes -->
+                                            <div class="mb-4">
+                                                <label for="paymentNotes" class="form-label">Notes (Optional)</label>
+                                                <textarea class="form-control" id="paymentNotes" rows="3" placeholder="Add any additional information about this payment"></textarea>
+                                            </div>
+                                            
+                                            <!-- Submit Button -->
+                                            <div class="d-grid gap-2">
+                                                <button type="submit" class="btn btn-primary btn-lg">
+                                                    <i class="fas fa-lock me-2"></i> Make Secure Payment
+                                                </button>
+                                                <div class="text-center mt-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-shield-alt me-1"></i> Your payment is secured with SSL encryption
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <!-- Payment Summary Card -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Payment Summary</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span>Payment Amount:</span>
+                                            <span class="fw-bold" id="summaryAmount">$0.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span>Processing Fee:</span>
+                                            <span id="summaryFee">$0.00</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span class="fw-bold">Total:</span>
+                                            <span class="fw-bold" id="summaryTotal">$0.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between text-muted small">
+                                            <span>Estimated arrival:</span>
+                                            <span id="estimatedArrival">1-2 business days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Recent Payments Card -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Recent Payments</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">Green Farms Ltd.</p>
+                                                        <small class="text-muted">Mar 15, 2025</small>
+                                                    </div>
+                                                    <span class="text-success">$2,450.00</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">Eastern Rice Producers</p>
+                                                        <small class="text-muted">Mar 10, 2025</small>
+                                                    </div>
+                                                    <span class="text-success">$3,200.00</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">Midwest Grain Co.</p>
+                                                        <small class="text-muted">Feb 28, 2025</small>
+                                                    </div>
+                                                    <span class="text-success">$1,875.50</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="#" class="text-decoration-none">View All Payments</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Help Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Need Help?</h5>
+                                        <p class="card-text">If you have any questions about payments or need assistance, our support team is here to help.</p>
+                                        <a href="#" class="btn btn-outline-primary">
+                                            <i class="fas fa-headset me-2"></i> Contact Support
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Request Payment Tab -->
+                    <div class="tab-pane fade" id="request-payment" role="tabpanel" aria-labelledby="request-payment-tab">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Request a Payment</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="requestPaymentForm">
+                                            <!-- Request Type Selection -->
+                                            <div class="mb-4">
+                                                <label class="form-label">Request Type</label>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="requestType" id="invoiceRequest" value="invoice" checked>
+                                                            <label class="form-check-label d-flex align-items-center" for="invoiceRequest">
+                                                                <i class="fas fa-file-invoice me-2" style="color: var(--primary-color);"></i>
+                                                                Create Invoice
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="requestType" id="contractRequest" value="contract">
+                                                            <label class="form-check-label d-flex align-items-center" for="contractRequest">
+                                                                <i class="fas fa-handshake me-2" style="color: var(--primary-color);"></i>
+                                                                Contract Milestone
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="requestType" id="directRequest" value="direct">
+                                                            <label class="form-check-label d-flex align-items-center" for="directRequest">
+                                                                <i class="fas fa-money-bill-wave me-2" style="color: var(--primary-color);"></i>
+                                                                Simple Request
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Recipient Selection -->
+                                            <div class="mb-4">
+                                                <label for="paymentRecipient" class="form-label">Request From</label>
+                                                <select class="form-select" id="paymentRecipient">
+                                                    <option value="" selected disabled>Select recipient</option>
+                                                    <option value="user1">Green Farms Ltd.</option>
+                                                    <option value="user2">Eastern Rice Producers</option>
+                                                    <option value="user3">Midwest Grain Co.</option>
+                                                    <option value="user4">Idaho Farms Inc.</option>
+                                                    <option value="user5">Southern Farms Cooperative</option>
+                                                    <option value="other">Add New Recipient</option>
+                                                </select>
+                                                <div class="form-text">Select the user or organization you want to request payment from.</div>
+                                            </div>
+                                            
+                                            <!-- Contract Selection (shown when contract request is selected) -->
+                                            <div class="mb-4 request-section d-none" id="contractRequestSection">
+                                                <label for="milestoneSelect" class="form-label">Select Contract Milestone</label>
+                                                <select class="form-select" id="milestoneSelect">
+                                                    <option value="" selected disabled>Choose a contract milestone</option>
+                                                    <option value="CTR-2025-042-M2">CTR-2025-042 - Organic Wheat Supply (Milestone 2 - $3,500.00)</option>
+                                                    <option value="CTR-2025-056-M1">CTR-2025-056 - Rice Cultivation (Milestone 1 - $2,800.00)</option>
+                                                    <option value="CTR-2025-061-F">CTR-2025-061 - Corn Supply Agreement (Final Payment - $4,200.00)</option>
+                                                </select>
+                                                <div class="form-text">Select a contract milestone that is ready for payment.</div>
+                                            </div>
+                                            
+                                            <!-- Invoice Details (shown when invoice request is selected) -->
+                                            <div class="mb-4 request-section" id="invoiceRequestSection">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="invoiceNumber" class="form-label">Invoice Number</label>
+                                                        <input type="text" class="form-control" id="invoiceNumber" placeholder="e.g., INV-2025-006" value="INV-2025-006" readonly>
+                                                        <div class="form-text">Auto-generated invoice number</div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="invoiceDate" class="form-label">Invoice Date</label>
+                                                        <input type="date" class="form-control" id="invoiceDate" value="2025-03-25">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="dueDate" class="form-label">Due Date</label>
+                                                        <input type="date" class="form-control" id="dueDate" value="2025-04-25">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="paymentTerms" class="form-label">Payment Terms</label>
+                                                        <select class="form-select" id="paymentTerms">
+                                                            <option value="net30" selected>Net 30</option>
+                                                            <option value="net15">Net 15</option>
+                                                            <option value="net7">Net 7</option>
+                                                            <option value="due">Due on Receipt</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Line Items (for invoice) -->
+                                            <div class="mb-4 request-section" id="lineItemsSection">
+                                                <label class="form-label">Line Items</label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="lineItemsTable">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th style="width: 40%;">Description</th>
+                                                                <th style="width: 15%;">Quantity</th>
+                                                                <th style="width: 20%;">Unit Price</th>
+                                                                <th style="width: 20%;">Total</th>
+                                                                <th style="width: 5%;"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control" placeholder="Item description" value="Organic Wheat - Premium Grade">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control quantity-input" value="10" min="1">
+                                                                </td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">$</span>
+                                                                        <input type="number" class="form-control price-input" value="250.00" step="0.01" min="0">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">$</span>
+                                                                        <input type="text" class="form-control line-total" value="2,500.00" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-outline-danger remove-line">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="5">
+                                                                    <button type="button" class="btn btn-sm btn-outline-primary" id="addLineItem">
+                                                                        <i class="fas fa-plus me-1"></i> Add Line Item
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end">Subtotal:</td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">$</span>
+                                                                        <input type="text" class="form-control" id="subtotal" value="2,500.00" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end">Tax (5%):</td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">$</span>
+                                                                        <input type="text" class="form-control" id="tax" value="125.00" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end fw-bold">Total:</td>
+                                                                <td>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">$</span>
+                                                                        <input type="text" class="form-control fw-bold" id="invoiceTotal" value="2,625.00" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Simple Request Fields (shown when direct request is selected) -->
+                                            <div class="mb-4 request-section d-none" id="directRequestSection">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="requestAmount" class="form-label">Amount</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text">$</span>
+                                                            <input type="number" class="form-control" id="requestAmount" placeholder="0.00" step="0.01" min="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="requestPurpose" class="form-label">Purpose</label>
+                                                        <input type="text" class="form-control" id="requestPurpose" placeholder="e.g., Crop delivery payment">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Notes -->
+                                            <div class="mb-4">
+                                                <label for="requestNotes" class="form-label">Notes to Recipient</label>
+                                                <textarea class="form-control" id="requestNotes" rows="3" placeholder="Add any additional information or instructions for the recipient"></textarea>
+                                            </div>
+                                            
+                                            <!-- Attachments -->
+                                            <div class="mb-4">
+                                                <label class="form-label">Attachments (Optional)</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="file" class="form-control" id="requestAttachment">
+                                                    <button class="btn btn-outline-secondary" type="button">Upload</button>
+                                                </div>
+                                                <div class="form-text">Attach any relevant documents (max 10MB per file).</div>
+                                            </div>
+                                            
+                                            <!-- Submit Button -->
+                                            <div class="d-grid gap-2">
+                                                <button type="submit" class="btn btn-primary btn-lg">
+                                                    <i class="fas fa-paper-plane me-2"></i> Send Payment Request
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <!-- Request Preview Card -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Request Preview</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <div class="border rounded p-3 mb-3 d-inline-block">
+                                                <i class="fas fa-file-invoice" style="font-size: 2rem; color: var(--primary-color);"></i>
+                                            </div>
+                                            <h5 class="mb-0">Invoice #INV-2025-006</h5>
+                                            <p class="text-muted">Organic Wheat - Premium Grade</p>
+                                        </div>
+                                        
+                                        <hr>
+                                        
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Subtotal:</span>
+                                            <span>$2,500.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Tax (5%):</span>
+                                            <span>$125.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="fw-bold">Total:</span>
+                                            <span class="fw-bold">$2,625.00</span>
+                                        </div>
+                                        
+                                        <hr>
+                                        
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Issue Date:</span>
+                                            <span>Mar 25, 2025</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Due Date:</span>
+                                            <span>Apr 25, 2025</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Terms:</span>
+                                            <span>Net 30</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-outline-primary btn-sm w-100">
+                                            <i class="fas fa-eye me-1"></i> Preview Full Invoice
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Recent Requests Card -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Recent Requests</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">INV-2025-005</p>
+                                                        <small class="text-muted">Southern Farms Cooperative</small>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="d-block">$1,950.00</span>
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">INV-2025-004</p>
+                                                        <small class="text-muted">Idaho Farms Inc.</small>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="d-block">$2,670.00</span>
+                                                        <span class="badge bg-danger">Overdue</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-0 fw-bold">INV-2025-003</p>
+                                                        <small class="text-muted">Midwest Grain Co.</small>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="d-block">$1,875.50</span>
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="#" class="text-decoration-none">View All Requests</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tips Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Tips for Payment Requests</h5>
+                                        <ul class="mb-0 ps-3">
+                                            <li class="mb-2">Be clear about payment terms and due dates</li>
+                                            <li class="mb-2">Include detailed descriptions for each line item</li>
+                                            <li class="mb-2">Attach supporting documents when necessary</li>
+                                            <li class="mb-0">Follow up politely on overdue payments</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other tabs will be added in subsequent sections -->
+                    <div class="tab-pane fade" id="payment-methods" role="tabpanel" aria-labelledby="payment-methods-tab">
+                        <p>Payment methods content will be added in the next section.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="invoices" role="tabpanel" aria-labelledby="invoices-tab">
+                        <p>Invoices content will be added in the next section.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <!-- Transaction Detail Modal -->
+    <div class="modal fade" id="transactionDetailModal" tabindex="-1" aria-labelledby="transactionDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionDetailModalLabel">Transaction Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="transaction-header mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h5 class="mb-1">Payment to Green Farms Ltd.</h5>
+                                <p class="text-muted mb-0">Transaction ID: TRX-2025-00123</p>
+                                <p class="mb-0">March 15, 2025 at 10:23 AM</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span class="badge bg-success p-2">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Payment Details</h6>
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-muted">Amount:</td>
+                                                <td class="text-end fw-bold">$2,450.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted">Fee:</td>
+                                                <td class="text-end">$12.25</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted">Total:</td>
+                                                <td class="text-end fw-bold">$2,462.25</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted">Payment Method:</td>
+                                                <td class="text-end">Visa ****8901</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted">Status:</td>
+                                                <td class="text-end text-success">Completed</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Recipient Information</h6>
+                                    <p class="mb-1"><strong>Green Farms Ltd.</strong></p>
+                                    <p class="mb-1">John Smith, CEO</p>
+                                    <p class="mb-1">john.smith@greenfarms.example.com</p>
+                                    <p class="mb-0">+1 (555) 123-4567</p>
+                                    <hr>
+                                    <p class="mb-0 small text-muted">First transaction with this recipient: Jan 10, 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h6 class="card-title">Payment Description</h6>
+                            <p class="mb-0">Payment for Invoice #INV-2025-001: Organic wheat delivery (10 tons) as per contract CTR-2025-042.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-outline-primary me-2">
+                                <i class="fas fa-download me-1"></i> Download Receipt
+                            </button>
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-print me-1"></i> Print
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#reportIssueModal">
+                                <i class="fas fa-exclamation-circle me-1"></i> Report Issue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Invoice Detail Modal -->
+    <div class="modal fade" id="invoiceDetailModal" tabindex="-1" aria-labelledby="invoiceDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="invoiceDetailModalLabel">Invoice Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="invoice-header mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3">
+                                        <img src="assets/img/logo.png" alt="AgriConnect Logo" height="40">
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">AgriConnect</h5>
+                                        <p class="text-muted mb-0">Contract-based Farming Platform</p>
+                                    </div>
+                                </div>
+                                <p class="mb-1">123 Farm Road</p>
+                                <p class="mb-1">Agriville, CA 94123</p>
+                                <p class="mb-1">United States</p>
+                                <p class="mb-0">support@agriconnect.com</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <h4 class="mb-2">INVOICE #INV-2025-001</h4>
+                                <p class="mb-1"><strong>Issue Date:</strong> March 10, 2025</p>
+                                <p class="mb-1"><strong>Due Date:</strong> April 10, 2025</p>
+                                <p class="mb-3"><strong>Status:</strong> <span class="badge bg-warning text-dark">Pending</span></p>
+                                <p class="mb-1"><strong>Contract Reference:</strong> CTR-2025-042</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="mb-2">Bill To:</h6>
+                            <address>
+                                <strong>Green Farms Ltd.</strong><br>
+                                123 Harvest Road<br>
+                                Farmington, AG 56789<br>
+                                Phone: (123) 456-7890<br>
+                                Email: billing@greenfarms.com
+                            </address>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h6 class="mb-2">From:</h6>
+                            <address>
+                                <strong>AgriConnect</strong><br>
+                                456 Market Street<br>
+                                Cropville, AG 12345<br>
+                                Phone: (987) 654-3210<br>
+                                Email: accounts@agriconnect.com
+                            </address>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive mb-4">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Quantity</th>
+                                    <th class="text-end">Unit Price</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Organic Wheat</td>
+                                    <td>Premium Grade Organic Wheat</td>
+                                    <td class="text-end">500 kg</td>
+                                    <td class="text-end">$7.00</td>
+                                    <td class="text-end">$3,500.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery</td>
+                                    <td>Transportation to Buyer Facility</td>
+                                    <td class="text-end">1</td>
+                                    <td class="text-end">$150.00</td>
+                                    <td class="text-end">$150.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Quality Certification</td>
+                                    <td>Organic Certification Documentation</td>
+                                    <td class="text-end">1</td>
+                                    <td class="text-end">$75.00</td>
+                                    <td class="text-end">$75.00</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Subtotal:</strong></td>
+                                    <td class="text-end">$3,725.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Tax (5%):</strong></td>
+                                    <td class="text-end">$186.25</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                    <td class="text-end fw-bold">$3,911.25</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="mb-2">Payment Terms:</h6>
+                            <p>Payment due within 30 days. Please include the invoice number with your payment.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-2">Payment Methods:</h6>
+                            <p>Bank Transfer, Credit Card, or PayPal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="mb-2">Notes:</h6>
+                            <p>This invoice is for Milestone 2 of the Organic Wheat Supply contract. The next milestone payment will be due upon delivery confirmation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-download me-2"></i>Download
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary">
+                            <i class="fas fa-print me-2"></i>Print
+                        </button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makePaymentModal">
+                            <i class="fas fa-credit-card me-2"></i>Pay Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Make Payment Modal -->
+    <div class="modal fade" id="makePaymentModal" tabindex="-1" aria-labelledby="makePaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="makePaymentModalLabel">Make Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-summary mb-4">
+                        <h6 class="mb-3">Payment Summary</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Invoice #INV-2025-001</span>
+                            <span>$3,911.25</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Processing Fee</span>
+                            <span>$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Amount</strong>
+                            <strong>$3,911.25</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6 class="mb-3">Select Payment Method</h6>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard1" checked>
+                            <label class="form-check-label d-flex align-items-center" for="creditCard1">
+                                <i class="fab fa-cc-visa me-2 text-primary"></i>
+                                Visa ending in 4242
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="bankAccount1">
+                            <label class="form-check-label d-flex align-items-center" for="bankAccount1">
+                                <i class="fas fa-university me-2 text-primary"></i>
+                                First National Bank (Checking)
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="paypal1">
+                            <label class="form-check-label d-flex align-items-center" for="paypal1">
+                                <i class="fab fa-paypal me-2 text-primary"></i>
+                                PayPal (user@example.com)
+                            </label>
+                        </div>
+                        <div class="mt-2">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#addPaymentMethodModal">
+                                <i class="fas fa-plus-circle me-1"></i> Add new payment method
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sendReceipt" checked>
+                            <label class="form-check-label" for="sendReceipt">
+                                Send receipt to my email
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <div>
+                            Your payment information is secure and encrypted.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-lock me-2"></i>Pay $3,911.25
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Report Issue Modal -->
+    <div class="modal fade" id="reportIssueModal" tabindex="-1" aria-labelledby="reportIssueModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportIssueModalLabel">Report Payment Issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportIssueForm">
+                        <div class="mb-3">
+                            <label for="issueType" class="form-label">Issue Type</label>
+                            <select class="form-select" id="issueType" required>
+                                <option value="" selected disabled>Select issue type</option>
+                                <option value="payment-not-received">Payment Not Received</option>
+                                <option value="incorrect-amount">Incorrect Amount Charged</option>
+                                <option value="duplicate-charge">Duplicate Charge</option>
+                                <option value="refund-request">Refund Request</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="transactionId" class="form-label">Transaction ID (if applicable)</label>
+                            <input type="text" class="form-control" id="transactionId" placeholder="e.g., TRX-8721">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="issueDescription" class="form-label">Describe the Issue</label>
+                            <textarea class="form-control" id="issueDescription" rows="4" required placeholder="Please provide details about the issue you're experiencing"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Contact Method</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="contactMethod" id="contactEmail" checked>
+                                <label class="form-check-label" for="contactEmail">
+                                    Email
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="contactMethod" id="contactPhone">
+                                <label class="form-check-label" for="contactPhone">
+                                    Phone
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="attachments" class="form-label">Attachments (Optional)</label>
+                            <input class="form-control" type="file" id="attachments" multiple>
+                            <div class="form-text">Upload screenshots, receipts, or other relevant documents (max 5MB each)</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="reportIssueForm" class="btn btn-primary">Submit Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-light py-3 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0"> 2025 AgriConnect. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-decoration-none text-muted me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-muted me-3">Terms of Service</a>
+                    <a href="#" class="text-decoration-none text-muted">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Initialize DataTables
+        $(document).ready(function() {
+            $('#transactionsTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+            });
+            
+            $('#invoicesTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+            });
+            
+            // Handle transaction row clicks
+            $('#transactionsTable tbody').on('click', 'tr', function() {
+                $('#transactionDetailModal').modal('show');
+            });
+            
+            // Handle invoice row clicks
+            $('#invoicesTable tbody').on('click', 'tr', function() {
+                $('#invoiceDetailModal').modal('show');
+            });
+            
+            // Handle add payment method button
+            $('.add-payment-method').on('click', function() {
+                $('#addPaymentMethodModal').modal('show');
+            });
+            
+            // Handle payment method selection
+            $('#paymentMethod').on('change', function() {
+                if ($(this).val() === 'new') {
+                    $('#makePaymentModal').modal('hide');
+                    setTimeout(function() {
+                        $('#addPaymentMethodModal').modal('show');
+                    }, 500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

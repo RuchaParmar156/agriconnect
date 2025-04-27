@@ -1,0 +1,67 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    padding-bottom: 40px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+.login-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    background-color: white;
+}
+.login-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+.login-body {
+    padding: 30px;
+}
+.form-floating {
+    margin-bottom: 20px;
+}
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+}
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.social-login {
+    margin-top: 30px;
+    text-align: center;
+}
+.social-login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: white;
+    transition: var(--transition);
+}
+.social-login-btn i {
+    margin-right: 10px;
+}
+.social-login-btn.google {
+    background-color: #DB4437;
+}
+.social-login-btn.facebook {
+    background-color: #4267B2;
+}
+.social-login-btn:hover {
+    opacity: 0.9;
+    color: white;
+}

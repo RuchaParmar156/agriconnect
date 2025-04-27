@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AgriConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            padding-bottom: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .signup-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            background-color: white;
+        }
+        .signup-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .signup-body {
+            padding: 30px;
+        }
+        .role-selector {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .role-option.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .role-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .form-floating {
+            margin-bottom: 20px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Signup Section -->
+    <section class="signup-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="signup-card">
+                        <div class="signup-header">
+                            <h2>Create Your Account</h2>
+                            <p class="mb-0">Join our community of farmers and buyers</p>
+                        </div>
+                        <div class="signup-body">
+                            <div class="role-selector">
+                                <div class="role-option active" id="farmer-role">
+                                    <i class="fas fa-tractor"></i>
+                                    <h4>Farmer</h4>
+                                    <p>Sell your produce directly</p>
+                                </div>
+                                <div class="role-option" id="buyer-role">
+                                    <i class="fas fa-shopping-basket"></i>
+                                    <h4>Buyer</h4>
+                                    <p>Source quality produce</p>
+                                </div>
+                            </div>
+
+                            <form id="signup-form">
+                                <input type="hidden" id="role" name="role" value="farmer">
+                                
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name" required>
+                                    <label for="fullname">Full Name</label>
+                                </div>
+                                
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                                    <label for="email">Email Address</label>
+                                </div>
+                                
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                                
+                                <div class="form-floating position-relative">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                    <label for="password">Password</label>
+                                    <span class="password-toggle" onclick="togglePassword('password')">
+                                        <i class="far fa-eye"></i>
+                                    </span>
+                                </div>
+                                
+                                <div class="form-floating position-relative">
+                                    <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <span class="password-toggle" onclick="togglePassword('confirm-password')">
+                                        <i class="far fa-eye"></i>
+                                    </span>
+                                </div>
+                                
+                                <!-- Farmer-specific fields -->
+                                <div id="farmer-fields">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="farm-name" name="farm-name" placeholder="Farm Name">
+                                        <label for="farm-name">Farm Name (Optional)</label>
+                                    </div>
+                                    
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="farm-location" name="farm-location" placeholder="Farm Location">
+                                        <label for="farm-location">Farm Location</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Buyer-specific fields -->
+                                <div id="buyer-fields" style="display: none;">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="company-name" name="company-name" placeholder="Company Name">
+                                        <label for="company-name">Company Name (Optional)</label>
+                                    </div>
+                                    
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="business-type" name="business-type" placeholder="Business Type">
+                                        <label for="business-type">Business Type</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100 py-3">Create Account</button>
+                                
+                                <div class="text-center mt-4">
+                                    Already have an account? <a href="login.html">Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Toggle password visibility
+        function togglePassword(id) {
+            const passwordInput = document.getElementById(id);
+            const icon = event.currentTarget.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        // Role selector functionality
+        document.getElementById('farmer-role').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('buyer-role').classList.remove('active');
+            document.getElementById('role').value = 'farmer';
+            document.getElementById('farmer-fields').style.display = 'block';
+            document.getElementById('buyer-fields').style.display = 'none';
+        });
+        
+        document.getElementById('buyer-role').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('farmer-role').classList.remove('active');
+            document.getElementById('role').value = 'buyer';
+            document.getElementById('farmer-fields').style.display = 'none';
+            document.getElementById('buyer-fields').style.display = 'block';
+        });
+        
+        // Form validation
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Here you would normally send the form data to your backend
+            alert('Account created successfully! Redirecting to login...');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        });
+        
+        // Check URL parameters for pre-selecting role
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            
+            if (type === 'buyer') {
+                document.getElementById('buyer-role').click();
+            }
+        });
+    </script>
+</body>
+</html>
